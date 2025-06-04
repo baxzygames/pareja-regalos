@@ -42,15 +42,20 @@
     }
     input {
       padding: 0.5rem;
-      margin-top: 1rem;
+      margin: 1rem auto;
       width: 200px;
       border-radius: 0.5rem;
       border: 1px solid #ccc;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <h1>Bienvenida 💖</h1>
+    <input type="password" id="passwordInput" placeholder="Ingresa la clave" />
+    <button onclick="checkPassword()">Entrar</button>
+  </div>
   <script>
     const SECRET_PASSWORD = 'amor2025';
     const rewards = [
@@ -91,25 +96,14 @@
       }
     }
 
-    function askPassword() {
-      document.getElementById('app').innerHTML = \`
-        <h1>Bienvenida 💖</h1>
-        <input type="password" id="passwordInput" placeholder="Ingresa la clave" />
-        <br/>
-        <button onclick="checkPassword()">Entrar</button>
-      \`;
-    }
-
     function checkPassword() {
-      const entered = document.getElementById('passwordInput').value;
-      if (entered === SECRET_PASSWORD) {
+      const input = document.getElementById('passwordInput').value;
+      if (input === SECRET_PASSWORD) {
         renderCatalog();
       } else {
         alert('Clave incorrecta 💔');
       }
     }
-
-    askPassword();
   </script>
 </body>
 </html>
