@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catálogo de Regalos 💖</title>
+  <style>
+    body {
+      background-color: #fff0f5;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+      color: #c2185b;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+      margin: 1rem auto;
+      max-width: 300px;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+    }
+    button {
+      background: #ec407a;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    input {
+      padding: 0.5rem;
+      margin-top: 1rem;
+      width: 200px;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    const SECRET_PASSWORD = 'amor2025';
+    const rewards = [
+      { id: 1, title: 'Cena romántica', points: 50, image: 'https://via.placeholder.com/300x200?text=Cena+romántica' },
+      { id: 2, title: 'Día de spa', points: 80, image: 'https://via.placeholder.com/300x200?text=Día+de+spa' },
+      { id: 3, title: 'Película y palomitas', points: 30, image: 'https://via.placeholder.com/300x200?text=Película+en+casa' },
+    ];
+
+    let points = parseInt(localStorage.getItem('pareja-points')) || 100;
+
+    function renderCatalog() {
+      document.body.innerHTML = \`
+        <h1>¡Hola amor! 💖 Tus puntos: \${points}</h1>
+        <button onclick="addPoints()">+10 puntos (secreto)</button>
+        \${rewards.map(r => \`
+          <div class="card">
+            <img src="\${r.image}" alt="\${r.title}" />
+            <h2>\${r.title}</h2>
+            <p>\${r.points} puntos</p>
+            <button onclick="redeem(\${r.id})" \${points < r.points ? 'disabled' : ''}>Canjear</button>
+          </div>
+        \`).join('')}
+      \`;
+    }
+
+    function addPoints() {
+      points += 10;
+      localStorage.setItem('pareja-points', points);
+      renderCatalog();
+    }
+
+    function redeem(id) {
+      const reward = rewards.find(r => r.id === id);
+      if (reward && points >= reward.points) {
+        points -= reward.points;
+        localStorage.setItem('pareja-points', points);
+        renderCatalog();
+      }
+    }
+
+    function askPassword() {
+      document.getElementById('app').innerHTML = \`
+        <h1>Bienvenida 💖</h1>
+        <input type="password" id="passwordInput" placeholder="Ingresa la clave" />
+        <br/>
+        <button onclick="checkPassword()">Entrar</button>
+      \`;
+    }
+
+    function checkPassword() {
+      const entered = document.getElementById('passwordInput').value;
+      if (entered === SECRET_PASSWORD) {
+        renderCatalog();
+      } else {
+        alert('Clave incorrecta 💔');
+      }
+    }
+
+    askPassword();
+  </script>
+</body>
+</html>
